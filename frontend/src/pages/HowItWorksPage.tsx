@@ -81,7 +81,7 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({ onNavigate }) =>
   return (
     <div className="min-h-screen bg-[#000000] text-[#F8FAFC] flex flex-col font-sans selection:bg-[#6B57FF] selection:text-white">
       {/* Header with Ambient Glow */}
-      <section className="relative pt-14 pb-8 px-6 text-center max-w-4xl mx-auto">
+      <section className="relative pt-14 pb-8 px-4 sm:px-6 text-center max-w-4xl mx-auto">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[280px] bg-[#6B57FF]/15 blur-[120px] pointer-events-none rounded-full" />
 
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#141A29] border border-[#232D45] text-xs font-mono text-[#00F0FF] mb-3">
@@ -89,7 +89,7 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({ onNavigate }) =>
           <span>ALGORITHMIC ARCHITECTURE PIPELINE</span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
           How BuildWise Works
         </h1>
         <p className="mt-3 text-sm sm:text-base text-slate-400 max-w-2xl mx-auto font-normal leading-relaxed">
@@ -115,7 +115,7 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({ onNavigate }) =>
       </section>
 
       {/* CENTERPIECE: REAL INTERACTIVE DEMO BLUEPRINT */}
-      <section ref={demoSectionRef} className="max-w-7xl mx-auto px-6 py-6 w-full">
+      <section ref={demoSectionRef} className="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full">
         <div className="mb-4 text-left flex flex-col sm:flex-row sm:items-end justify-between gap-2">
           <div>
             <div className="text-xs font-mono text-indigo-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
@@ -144,7 +144,7 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({ onNavigate }) =>
       </section>
 
       {/* 7-Step Verified Pipeline Breakdown */}
-      <section className="max-w-7xl mx-auto px-6 py-16 w-full">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16 w-full">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <span className="text-xs font-mono font-bold text-indigo-400 uppercase tracking-wider">
             Behind the Scenes
@@ -191,7 +191,7 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({ onNavigate }) =>
       </section>
 
       {/* Bottom Conversion CTA */}
-      <section className="max-w-4xl mx-auto px-6 py-12 text-center">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-center">
         <div className="p-8 rounded-3xl bg-gradient-to-b from-[#0F1424] to-[#080B14] border border-[#1F293D] shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 blur-[80px] pointer-events-none rounded-full" />
           

@@ -84,6 +84,22 @@ export const InteractiveDemoStudio: React.FC<InteractiveDemoStudioProps> = ({
 
   const handleMouseUp = () => setIsDragging(false)
 
+  // Touch gesture support for mobile & tablet screens
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      setIsDragging(true)
+      setDragStart({ x: e.touches[0].clientX - pan.x, y: e.touches[0].clientY - pan.y })
+    }
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isDragging && e.touches.length === 1) {
+      setPan({ x: e.touches[0].clientX - dragStart.x, y: e.touches[0].clientY - dragStart.y })
+    }
+  }
+
+  const handleTouchEnd = () => setIsDragging(false)
+
   const handleZoom = (delta: number) => {
     setZoom((prev) => Math.min(Math.max(prev + delta, 0.6), 3.5))
   }
@@ -131,40 +147,40 @@ export const InteractiveDemoStudio: React.FC<InteractiveDemoStudioProps> = ({
   return (
     <div className="w-full flex flex-col bg-[#050811] text-slate-100 font-sans select-none rounded-2xl overflow-hidden border border-[#1A2234] shadow-2xl">
       {/* Top Header: Demo Banner & Summary Pills */}
-      <div className="px-6 py-4 bg-[#080D1A] border-b border-[#1A2234] flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+      <div className="px-4 sm:px-6 py-3 sm:py-4 bg-[#080D1A] border-b border-[#1A2234] flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] sm:text-xs font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>INTERACTIVE DEMO</span>
           </div>
 
           <div className="text-left">
-            <h2 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+            <h2 className="text-xs sm:text-sm font-bold text-white tracking-tight flex items-center gap-2">
               <span>{DEMO_METADATA.project_name}</span>
             </h2>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[10px] sm:text-[11px] text-slate-400">
               Precomputed deterministic sample project · Zero user database writes
             </p>
           </div>
         </div>
 
         {/* Compliance Transparency Badges */}
-        <div className="flex items-center gap-2">
-          <div className="px-2.5 py-1 rounded-lg bg-[#0F1626] border border-[#1E293B] text-[11px] text-slate-300 font-mono">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <div className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-[#0F1626] border border-[#1E293B] text-[10px] sm:text-[11px] text-slate-300 font-mono">
             <strong>7</strong> Checks
           </div>
-          <div className="px-2.5 py-1 rounded-lg bg-emerald-950/40 border border-emerald-500/40 text-[11px] text-emerald-300 font-mono flex items-center gap-1">
+          <div className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-emerald-950/40 border border-emerald-500/40 text-[10px] sm:text-[11px] text-emerald-300 font-mono flex items-center gap-1">
             <Check className="w-3 h-3 text-emerald-400" />
             <span><strong>5</strong> Passed</span>
           </div>
-          <div className="px-2.5 py-1 rounded-lg bg-rose-950/40 border border-rose-500/40 text-[11px] text-rose-300 font-mono flex items-center gap-1">
+          <div className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-rose-950/40 border border-rose-500/40 text-[10px] sm:text-[11px] text-rose-300 font-mono flex items-center gap-1">
             <AlertTriangle className="w-3 h-3 text-rose-400" />
             <span><strong>2</strong> Violations</span>
           </div>
 
           <button
             onClick={() => onNavigate('/projects/new')}
-            className="ml-2 px-4 py-1.5 rounded-full bg-white hover:bg-slate-100 text-black text-xs font-bold transition-all active:scale-95 shadow-md flex items-center gap-1.5 shrink-0"
+            className="hidden sm:flex ml-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white hover:bg-slate-100 text-black text-xs font-bold transition-all active:scale-95 shadow-md items-center gap-1.5 shrink-0"
           >
             <span>Analyze Your Blueprint</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -173,12 +189,12 @@ export const InteractiveDemoStudio: React.FC<InteractiveDemoStudioProps> = ({
       </div>
 
       {/* Guided Walkthrough Controller (30-60 second guided experience) */}
-      <div className="px-6 py-2.5 bg-[#0B1020] border-b border-[#1A2234] flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2">
-          <span className="text-indigo-400 font-mono font-bold text-[11px] uppercase tracking-wider">
-            Walkthrough Step {guidedStep}/5:
+      <div className="px-4 sm:px-6 py-2.5 bg-[#0B1020] border-b border-[#1A2234] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-left">
+          <span className="text-indigo-400 font-mono font-bold text-[11px] uppercase tracking-wider shrink-0">
+            Step {guidedStep}/5:
           </span>
-          <span className="text-slate-200 font-medium">
+          <span className="text-slate-200 text-xs font-medium">
             {guidedStep === 1 && 'Explore Floor Plan & Detected Regulatory Finding Markers'}
             {guidedStep === 2 && 'Inspect Violation 1: Corridor Clear Width Shortfall (1.18m vs 1.50m)'}
             {guidedStep === 3 && 'Inspect Violation 2: Office Door Leaf Clear Width (0.75m vs 0.90m)'}
@@ -187,11 +203,11 @@ export const InteractiveDemoStudio: React.FC<InteractiveDemoStudioProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
           {guidedStep > 1 && (
             <button
               onClick={prevStep}
-              className="px-2.5 py-1 rounded-lg bg-[#141C2E] hover:bg-[#1C263D] text-slate-300 text-[11px] flex items-center gap-1 transition-colors"
+              className="px-2.5 py-1 rounded-lg bg-[#141C2E] hover:bg-[#1C263D] text-slate-300 text-[11px] flex items-center gap-1 transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-3 h-3" />
               <span>Previous</span>
@@ -200,7 +216,7 @@ export const InteractiveDemoStudio: React.FC<InteractiveDemoStudioProps> = ({
 
           <button
             onClick={nextStep}
-            className="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-semibold flex items-center gap-1 transition-colors shadow-sm"
+            className="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-semibold flex items-center gap-1 transition-colors shadow-sm cursor-pointer"
           >
             <span>{guidedStep === 5 ? 'Start Your Analysis →' : 'Next Step →'}</span>
           </button>
@@ -208,11 +224,11 @@ export const InteractiveDemoStudio: React.FC<InteractiveDemoStudioProps> = ({
       </div>
 
       {/* Main Studio Split Layout: Left Blueprint Canvas, Right Findings Inspector */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[580px] bg-[#050811]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 bg-[#050811]">
         {/* Left Column: Interactive CAD Floor Plan Viewport (7 cols) */}
         <div className="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-[#1A2234] relative flex flex-col bg-[#04060E]">
           {/* Viewport Floating Controls */}
-          <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 bg-[#0A0F1D]/90 backdrop-blur-md px-2.5 py-1.5 rounded-xl border border-[#1E293B] shadow-lg text-xs">
+          <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 z-10 flex items-center gap-1 bg-[#0A0F1D]/90 backdrop-blur-md px-2 py-1 rounded-xl border border-[#1E293B] shadow-lg text-xs">
             <button
               onClick={() => handleZoom(0.2)}
               className="p-1 rounded-lg hover:bg-slate-800 text-slate-300 transition-colors"
@@ -229,7 +245,7 @@ export const InteractiveDemoStudio: React.FC<InteractiveDemoStudioProps> = ({
             </button>
             <button
               onClick={handleResetView}
-              className="px-2 py-0.5 rounded-lg hover:bg-slate-800 text-slate-300 text-[11px] font-mono transition-colors"
+              className="px-2 py-0.5 rounded-lg hover:bg-slate-800 text-slate-300 text-[10px] font-mono transition-colors"
               title="Fit to Screen"
             >
               Fit
@@ -240,17 +256,20 @@ export const InteractiveDemoStudio: React.FC<InteractiveDemoStudioProps> = ({
           </div>
 
           {/* Compass / North Indicator (Top Right) */}
-          <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-[#0A0F1D]/90 backdrop-blur-md px-2.5 py-1 rounded-lg border border-[#1E293B] text-[10px] text-slate-400 font-mono">
-            <Compass className="w-3.5 h-3.5 text-indigo-400" />
+          <div className="absolute top-2.5 sm:top-3 right-2.5 sm:right-3 z-10 flex items-center gap-1 bg-[#0A0F1D]/90 backdrop-blur-md px-2 py-1 rounded-lg border border-[#1E293B] text-[10px] text-slate-400 font-mono">
+            <Compass className="w-3 h-3 text-indigo-400" />
             <span>N</span>
           </div>
 
-          {/* Main SVG Canvas */}
+          {/* Main SVG Canvas with touch & mouse drag */}
           <div
-            className="flex-1 w-full h-[480px] lg:h-[580px] overflow-hidden cursor-grab active:cursor-grabbing relative"
+            className="w-full h-[320px] sm:h-[420px] lg:h-[560px] overflow-hidden cursor-grab active:cursor-grabbing relative touch-none"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             <svg
               viewBox={`${viewX} ${viewY} ${viewWidth} ${viewHeight}`}

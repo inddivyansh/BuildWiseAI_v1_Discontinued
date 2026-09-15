@@ -39,6 +39,11 @@ const AppShell: React.FC = () => {
     fetchProjects()
   }, [])
 
+  // Auto-scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
   const handleDeleteProject = async (projectId: string) => {
     try {
       await apiClient.deleteProject(projectId)

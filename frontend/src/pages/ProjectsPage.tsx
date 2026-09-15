@@ -40,7 +40,7 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({
 
   return (
     <div className="min-h-screen bg-[#000000] text-[#F8FAFC] flex flex-col font-sans selection:bg-[#6B57FF] selection:text-white">
-      <div className="max-w-7xl mx-auto px-6 py-12 w-full flex-1 flex flex-col">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full flex-1 flex flex-col">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 border-b border-[#1A2133]">
           <div>
