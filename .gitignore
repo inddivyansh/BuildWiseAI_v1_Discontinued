@@ -111,4 +111,5 @@ logs/
 *.onnx
 *.pkl
 *.h5
-models/
+/models/
+!backend/app/models/

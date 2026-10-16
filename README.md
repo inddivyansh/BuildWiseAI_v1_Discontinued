@@ -9,7 +9,9 @@ BuildWise AI is an architectural drawing analysis platform built with **FastAPI,
 >
 > BuildWise AI provides early-stage screening only. It is not a statutory authority, does not issue compliance certificates or guarantee permit approval, and does not replace review by a licensed architect, fire-safety professional, or relevant local authority. Regulatory thresholds and clause references must be verified against authoritative code documents and applicable local bye-laws before being relied upon.
 
->For current better implementation check v2 on my profile with improved architechture and additional features. 
+> [!TIP]
+> **Looking for the latest version?**
+> For an updated implementation with improved architecture, advanced vision AI, and extended compliance workflows, check out **[BuildWise AI v2](https://github.com/inddivyansh)** on the profile.
 
 ---
 
@@ -145,12 +147,10 @@ BuildWise AI
 │   ├── alembic/                 Database migrations
 │   └── tests/                   Unit and integration tests
 │
-├── docker-compose.yml
-├── docker-compose.dev.yml
-├── .env.example
-├── Makefile
-├── buildwise_architecture_v1.md
-└── buildwise_spec_v2.md
+├── docker-compose.yml           # Production & demo stack (DB + backend + Nginx frontend)
+├── docker-compose.dev.yml       # Local development stack (DB + hot-reload backend)
+├── .env.example                 # Environment template
+└── Makefile                     # Development shortcuts and test runners
 ```
 
 ### Request lifecycle
@@ -244,19 +244,24 @@ Set a secure PostgreSQL password and JWT secret. Add a valid `GEMINI_API_KEY` if
 ### 3. Run the full stack
 
 ```bash
+# Using Makefile
 make up
+
+# Or directly with Docker Compose (docker-compose.yml)
+docker compose up --build -d
 ```
 
-The Makefile is configured to build and start the Docker Compose stack. The default endpoints documented by the project are:
+This starts PostgreSQL (with pgvector), the FastAPI backend, and the React frontend served via Nginx. The endpoints are:
 
 - Frontend: http://localhost
 - Backend API: http://localhost:8000
-- API documentation in debug/development mode: http://localhost:8000/docs
+- API documentation (when DEBUG=true): http://localhost:8000/docs
 
 Stop the containers with:
 
 ```bash
 make down
+# or: docker compose down
 ```
 
 ### Development workflow

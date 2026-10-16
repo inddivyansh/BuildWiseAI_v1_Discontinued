@@ -56,7 +56,10 @@ class Settings(BaseSettings):
         return self.max_upload_size_mb * 1024 * 1024
 
     # ─── CORS ─────────────────────────────────────────────
-    cors_origins: str = "http://localhost:5173,http://localhost:3000"
+    cors_origins: str = (
+        "http://localhost:5173,http://localhost:3000,http://localhost:80,http://localhost,"
+        "http://127.0.0.1:5173,http://127.0.0.1:3000,http://127.0.0.1:80,http://127.0.0.1"
+    )
 
     @property
     def cors_origins_list(self) -> list[str]:
