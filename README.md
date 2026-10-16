@@ -9,6 +9,8 @@ BuildWise AI is an architectural drawing analysis platform built with **FastAPI,
 >
 > BuildWise AI provides early-stage screening only. It is not a statutory authority, does not issue compliance certificates or guarantee permit approval, and does not replace review by a licensed architect, fire-safety professional, or relevant local authority. Regulatory thresholds and clause references must be verified against authoritative code documents and applicable local bye-laws before being relied upon.
 
+>For current better implementation check v2 on my profile with improved architechture and additional features. 
+
 ---
 
 ## Overview
