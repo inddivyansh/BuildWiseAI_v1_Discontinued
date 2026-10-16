@@ -16,6 +16,7 @@ import { ProjectsPage } from './pages/ProjectsPage'
 import { NewProjectPage } from './pages/NewProjectPage'
 import { AnalysisProgressPage } from './pages/AnalysisProgressPage'
 import { ProjectWorkspacePage } from './pages/ProjectWorkspacePage'
+import { BlueprintAssessPage } from './pages/BlueprintAssessPage'
 import { apiClient } from './api/client'
 import type { Project } from './types/project'
 
@@ -135,6 +136,9 @@ const AppShell: React.FC = () => {
         <Routes>
           {/* Screen 1: Landing Page */}
           <Route path="/" element={<LandingPage onNavigate={(r) => navigate(r)} />} />
+
+          {/* Blueprint Assessment — standalone vision analysis */}
+          <Route path="/blueprint-assess" element={<BlueprintAssessPage onNavigate={(r) => navigate(r)} />} />
 
           {/* Screen 2: How It Works */}
           <Route

@@ -1,7 +1,7 @@
 # BuildWise AI — Backend Dockerfile (Development)
 # Includes dev tools and enables hot-reload via volume mount
 
-FROM python:3.11-slim
+FROM python:3.11-slim-bookworm
 
 # System dependencies (same as production)
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -15,10 +15,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxext6 \
     libxrender-dev \
     libgomp1 \
-    pango1.0-0 \
+    libpango-1.0-0 \
     libpangocairo-1.0-0 \
     libcairo2 \
-    libgdk-pixbuf2.0-0 \
+    libgdk-pixbuf-2.0-0 \
     curl \
     git \
     && rm -rf /var/lib/apt/lists/*

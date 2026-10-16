@@ -4,7 +4,7 @@
 # ──────────────────────────────────────────────────────────
 
 # Stage 1: Build dependencies
-FROM python:3.11-slim AS builder
+FROM python:3.11-slim-bookworm AS builder
 
 WORKDIR /build
 
@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 # ──────────────────────────────────────────────────────────
 # Stage 2: Production image
 # ──────────────────────────────────────────────────────────
-FROM python:3.11-slim AS production
+FROM python:3.11-slim-bookworm AS production
 
 LABEL maintainer="BuildWise AI"
 LABEL version="0.1.0"
@@ -39,10 +39,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxrender-dev \
     libgomp1 \
     # WeasyPrint
-    pango1.0-0 \
+    libpango-1.0-0 \
     libpangocairo-1.0-0 \
     libcairo2 \
-    libgdk-pixbuf2.0-0 \
+    libgdk-pixbuf-2.0-0 \
     # curl for Docker health checks
     curl \
     # PostgreSQL client (for health checks in scripts)

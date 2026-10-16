@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Menu,
   X,
+  ScanLine,
 } from 'lucide-react'
 
 export interface NavbarProps {
@@ -54,6 +55,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'Product', path: '/' },
     { label: 'How It Works', path: '/how-it-works' },
     { label: 'Projects', path: '/projects' },
+    { label: 'Blueprint Check', path: '/blueprint-assess' },
   ]
 
   return (

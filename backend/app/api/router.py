@@ -4,7 +4,7 @@ API v1 Router — aggregates all route modules under /api/v1/
 
 from fastapi import APIRouter
 
-from app.api.v1 import projects, documents, analysis, compliance, reports, regulations, chat, websocket
+from app.api.v1 import projects, documents, analysis, compliance, reports, regulations, chat, websocket, blueprint
 
 api_router = APIRouter()
 
@@ -62,4 +62,11 @@ api_router.include_router(
     websocket.router,
     prefix="/ws",
     tags=["WebSocket"],
+)
+
+# ── Blueprint Assessment ────────────────────────────────────
+api_router.include_router(
+    blueprint.router,
+    prefix="/blueprint",
+    tags=["Blueprint Assessment"],
 )

@@ -2424,33 +2424,52 @@ We are consciously accepting the following shortcuts for MVP:
 
 ---
 
-## OPEN QUESTIONS (Genuinely Require Your Answer)
+## PART 31 — VISION-BASED BLUEPRINT ASSESSMENT & REVISED DRAWING ENGINE
 
-> I have made sensible defaults for everything I could. Only these items fundamentally change the architecture:
+> **Status:** Implemented & Verified in v1.1  
+> **Route / Endpoint:** `POST /api/v1/blueprint/assess` & Frontend `/blueprint-assess`
 
-### OQ-1 — NBC Regulatory Source Access
+### 31.1 Architecture Overview
 
-> **Do you have access to the NBC 2016 PDF?**
+The Vision Blueprint Assessment Engine bridges classical CAD analysis and rapid image/drawing screening. It accepts standard construction plan raster and vector formats (`PNG`, `JPG`, `JPEG`, `PDF`, `SVG`, `BMP`, `WEBP`, `TIFF`) and evaluates floor plans against the **National Building Code of India (NBC 2016)**.
 
-If yes: we can ingest it for RAG and verify rule values from the document.  
-If no: we need to use publicly available summaries + mark all values as `REQUIRES VERIFICATION` until verified.
+In addition to detecting structural and regulatory flaws, it produces a **Suggested Revised Blueprint Drawing** with concrete architectural corrections mapped directly onto the plan coordinates.
 
-This affects Phase 4 (RAG) and all compliance rule threshold values.
+### 31.2 Processing Topology
 
-### OQ-2 — LLM API Key Availability
+```
+User Upload (PNG/JPG/PDF/SVG)
+            │
+            ▼
+    [FastAPI /blueprint/assess]
+            │
+    ┌───────┴────────────────────────┐
+    │                                │
+    ▼                                ▼
+[Gemini Vision Multimodal API]   [Classical Geometric Fallback Engine]
+    │                                │
+    └───────┬────────────────────────┘
+            │
+            ▼
+    [Normalized BlueprintAssessmentResult]
+     ├── issues: [BlueprintIssue (id, category, severity, coordinates)]
+     ├── annotations: [BlueprintSVGAnnotation (color, pin labels)]
+     ├── improvements: [ImprovementSuggestion (priority, impact)]
+     └── revised_elements: [RevisedDrawingElement (type, bounds, color)]
+            │
+            ▼
+    [Frontend Blueprint Evaluation Studio]
+     ├── Suggested Revised Blueprint View (corridors, doors, barriers)
+     ├── Flaws & Defect Pins View (interactive pin markers)
+     └── Synchronized Side-by-Side Split View (Before vs. After)
+```
 
-> **Will you use OpenAI/Gemini/Anthropic API keys for development and demos, or do you need fully local LLM (Ollama)?**
+### 31.3 Schema Contracts
 
-The architecture supports both, but the default prompt engineering and quality are tuned for GPT-4o-mini. If local-only, we default to Ollama + Mistral 7B and accept lower explanation quality.
-
-### OQ-3 — Authentication Requirement
-
-> **For the initial portfolio demo: no-auth mode (single user, no login required) or JWT auth?**
-
-My recommendation: **no-auth for the first working demo.** JWT scaffolding is in place and can be enabled by a config flag. This lets reviewers run the demo without registering.
-
-Do you agree?
+* `BlueprintIssue`: Defines detected flaw, severity, location, recommendation, NBC code reference, and normalized coordinates `(x_pct, y_pct)`.
+* `RevisedDrawingElement`: Defines architectural modification (`corridor`, `door`, `fire_barrier`, `ventilation`, `ramp`, `dimension`), coordinate bounds, styling, and design rationale.
+* `BlueprintAssessmentResult`: Bundles compliance score (0–100), overall risk index, issues list, improvements list, revised drawing elements, and executive summary.
 
 ---
 
-*This document represents the full pre-implementation specification for BuildWise AI v1. Upon your answers to OQ-1 through OQ-3, we are ready to move to Phase 0 implementation.*
+*This document represents the technical architecture and specifications for BuildWise AI.*

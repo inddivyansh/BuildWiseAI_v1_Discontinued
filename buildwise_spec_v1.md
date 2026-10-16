@@ -2032,3 +2032,120 @@ This specification is ready for implementation immediately upon your approval.
 The two decisions in Section 16 should also be answered before I start. If you do not answer them, I will default to:
 - **Decision A:** FastAPI static file serving (Option 1)
 - **Decision B:** Model slots as proposed; you confirm API key availability separately
+
+---
+
+# SECTION 18 — VISION-BASED BLUEPRINT ASSESSMENT & REVISED DRAWING SPECIFICATION (IMPLEMENTED)
+
+> **Implementation Status:** COMPLETE & VERIFIED  
+> **Route / Endpoint:** `POST /api/v1/blueprint/assess` & Frontend `/blueprint-assess`  
+> **Applicable Regulations:** National Building Code of India (NBC 2016) Part 4 (Fire & Life Safety), Part 8 (Building Services / Ventilation), and Part 3 (Accessibility)
+
+### 18.1 Feature Overview
+
+BuildWise AI provides a standalone and project-integrated Vision AI Blueprint Assessment pipeline. Users upload construction plans or blueprint drawings in standard formats (PNG, JPG, JPEG, PDF, SVG, BMP, WEBP, TIFF). The system performs deep architectural compliance screening against NBC 2016 rules, outputs structured flaw markers with pinpoint coordinates, and synthesizes a **Suggested Revised Blueprint Drawing** with concrete visual architectural improvements overlaid directly on the plan.
+
+### 18.2 Ingestion & Processing Pipeline
+
+```
+[Uploaded Blueprint: PNG/JPG/PDF/SVG]
+               │
+               ▼
+   [Format & Size Validation (≤20MB)]
+               │
+               ▼
+   ┌──────────────────────────────────────────────┐
+   │ Dual-Track Evaluation Strategy:              │
+   │  - Primary: Gemini Multimodal Vision AI      │
+   │    (Analyzes spatial geometry & room layout) │
+   │  - Fallback: Classical Rule Engine           │
+   │    (Guarantees 100% offline uptime)          │
+   └──────────────────────────────────────────────┘
+               │
+               ▼
+   ┌──────────────────────────────────────────────────────────────┐
+   │ Structured Assessment Synthesis:                             │
+   │  1. Overall Risk Index & Compliance Score (0–100)            │
+   │  2. Defect & Flaw List with NBC 2016 Code Citations          │
+   │  3. SVG Pinpoint Flaw Coordinates (x_pct, y_pct)             │
+   │  4. Prioritized Improvements Schedule                        │
+   │  5. Suggested Revised Drawing Elements (Corridors, Doors,    │
+   │     Fire Barriers, Glazing Louvers, Ramps, Dimensions)       │
+   │  6. Revised Blueprint Architectural Specifications           │
+   └──────────────────────────────────────────────────────────────┘
+               │
+               ▼
+   [Frontend Blueprint Evaluation Studio (/blueprint-assess)]
+     ├── Mode 1: Suggested Revised Blueprint (Visual Revisions)
+     ├── Mode 2: Flaws & Defect Pins (Interactive Marker Overlays)
+     └── Mode 3: Side-by-Side Split View (Before vs. After)
+```
+
+### 18.3 Data Contract
+
+```json
+{
+  "assessment_id": "uuid-v4",
+  "filename": "floorplan_commercial.png",
+  "file_format": "png",
+  "image_width_px": 1920,
+  "image_height_px": 1080,
+  "processing_time_ms": 1420,
+  "ai_model_used": "gemini-3.8-flash | classical-cv-fallback",
+  "overall_risk": "low | medium | high | critical",
+  "compliance_score": 78,
+  "issues": [
+    {
+      "id": "ISS-001",
+      "category": "egress",
+      "severity": "critical",
+      "title": "Insufficient exit corridor width",
+      "description": "Primary corridor width is below the 1.8m requirement for business occupancy.",
+      "location": "North Access Corridor",
+      "recommendation": "Widen corridor clear width to minimum 1.8m to eliminate dead-end bottleneck.",
+      "code_reference": "NBC 2016, Part 4, Clause 3.2.1",
+      "coordinates": { "x_pct": 72.0, "y_pct": 48.0 }
+    }
+  ],
+  "improvements": [
+    {
+      "id": "IMP-001",
+      "priority": 1,
+      "title": "Corridor Widening & Clear Egress Path",
+      "detail": "Expand north corridor clear width from 1.1m to 1.8m.",
+      "estimated_impact": "Permits safe evacuation flow for up to 350 occupants.",
+      "category": "egress"
+    }
+  ],
+  "revised_elements": [
+    {
+      "id": "REV-001",
+      "issue_id": "ISS-001",
+      "title": "Expanded Corridor (1.8m clear width)",
+      "category": "egress",
+      "element_type": "corridor",
+      "x_pct": 72.0,
+      "y_pct": 48.0,
+      "width_pct": 18.0,
+      "height_pct": 8.0,
+      "color": "#10B981",
+      "description": "Expanded passageway clear width to 1.8m with continuous safety egress clearance",
+      "code_reference": "NBC 2016 Part 4, Clause 3.2.1"
+    }
+  ],
+  "executive_summary": "Comprehensive architectural assessment completed...",
+  "revised_blueprint_notes": "Suggested Revised Blueprint Modifications: 1. Primary corridor widened...",
+  "base64_image": "data:image/png;base64,...",
+  "disclaimer": "BuildWise AI blueprint assessment uses AI vision analysis for preliminary screening only..."
+}
+```
+
+### 18.4 UI / UX Capabilities
+
+1. **Format Agnostic**: Accepts standard construction file formats (`PNG`, `JPG`, `PDF`, `SVG`, `BMP`, `WEBP`, `TIFF`).
+2. **Instant Sample Blueprint**: Built-in SVG architectural floor plan generator for zero-friction one-click testing.
+3. **Interactive Drawing Studio**:
+   - **Suggested Revised Blueprint**: Renders green safety paths, outward door swings, 2-hr fire separation barriers, and daylighting louvers right over the blueprint drawing.
+   - **Flaws View**: Pulsing marker pins, severity badges, and hover details.
+   - **Side-by-Side Split View**: Dual synchronized canvas showing original vs revised layout.
+4. **Export System**: JSON report download and architectural notes clipboard export.

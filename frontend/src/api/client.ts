@@ -157,4 +157,21 @@ export const apiClient = {
   // Reports
   downloadReportJsonUrl: (runId: string) => `${API_BASE}/api/v1/reports/${runId}/json`,
   downloadReportPdfUrl: (runId: string) => `${API_BASE}/api/v1/reports/${runId}/pdf`,
+
+  // Blueprint Assessment (Vision AI)
+  assessBlueprint: async (
+    file: File,
+    occupancyType: string = 'Business/Office',
+    includeImage: boolean = true,
+  ): Promise<any> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('occupancy_type', occupancyType)
+    formData.append('include_image', String(includeImage))
+    const res = await api.post<any>('/api/v1/blueprint/assess', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 120000, // 2 min timeout for vision analysis
+    })
+    return res.data
+  },
 }
